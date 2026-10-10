@@ -23,7 +23,7 @@ Aplikasi web untuk pengelolaan informasi bahan ajar Universitas Terbuka.
 - **Tracking Pengiriman** (lacak nomor DO + timeline perjalanan paket)
 
 ## Teknologi
-- HTML, CSS, JavaScript (vanilla)
+- HTML, CSS, JavaScript DOM
 - SweetAlert2 (notifikasi)
 - Font Awesome (ikon)
 
