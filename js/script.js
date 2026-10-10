@@ -2,24 +2,38 @@ const loginForm = document.getElementById('loginForm');
 if (loginForm) {
     loginForm.addEventListener('submit', function(e) {
         e.preventDefault();
-        const email = document.getElementById('email').value;
-        const pass = document.getElementById('password').value;
-        const user = dataPengguna.find(u => u.email === email && u.password === pass);
-        if (user) {
-            localStorage.setItem('sitta_user', JSON.stringify(user));
-            Swal.fire({
-                icon: 'success',
-                title: 'Login Berhasil!',
-                text: `Memasuki sistem sebagai ${user.nama}`,
-                confirmButtonColor: '#0284c7'
-            }).then(() => window.location.href = "dashboard.html");
-        } else {
-            Swal.fire({ icon: 'error', title: 'Akses Ditolak', text: 'Email atau password salah.' });
+        const email = document.getElementById('email').value.trim();
+        const pass = document.getElementById('password').value.trim();
+        
+        if (typeof dataPengguna !== 'undefined') {
+            const user = dataPengguna.find(u => u.email === email && u.password === pass);
+            if (user) {
+                localStorage.setItem('sitta_user', JSON.stringify(user));
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Login Berhasil!',
+                    text: `Memasuki sistem sebagai ${user.nama}`,
+                    confirmButtonColor: '#0284c7'
+                }).then(() => window.location.href = "dashboard.html");
+            } else {
+                Swal.fire({ icon: 'error', title: 'Akses Ditolak', text: 'Email atau password salah.' });
+            }
         }
     });
 }
 
-// Greeting
+const modalLupa = document.getElementById('modalLupa');
+const modalDaftar = document.getElementById('modalDaftar');
+const btnLupa = document.getElementById('btnLupaPassword');
+const btnDaftar = document.getElementById('btnDaftar');
+const closeLupa = document.getElementById('closeLupa');
+const closeDaftar = document.getElementById('closeDaftar');
+
+if (btnLupa && modalLupa) btnLupa.onclick = (e) => { e.preventDefault(); modalLupa.style.display = "block"; };
+if (btnDaftar && modalDaftar) btnDaftar.onclick = (e) => { e.preventDefault(); modalDaftar.style.display = "block"; };
+if (closeLupa && modalLupa) closeLupa.onclick = () => modalLupa.style.display = "none";
+if (closeDaftar && modalDaftar) closeDaftar.onclick = () => modalDaftar.style.display = "none";
+
 const greetingText = document.getElementById('greetingText');
 if (greetingText) {
     const now = new Date();
@@ -35,7 +49,7 @@ if (greetingText) {
     
     greetingText.innerText = `${ucapan}, ${namaUser}`;
     
-    if(userData && document.getElementById('roleText')) {
+    if (userData && document.getElementById('roleText')) {
         document.getElementById('roleText').innerText = `Login sebagai ${userData.role} - ${userData.lokasi}`;
     }
 
@@ -45,23 +59,22 @@ if (greetingText) {
     }
 
     const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-    const tanggalFormat = now.toLocaleDateString('id-ID', options);
     const dateDOM = document.getElementById('currentDate');
-    if(dateDOM) {
-        dateDOM.innerText = tanggalFormat;
+    if (dateDOM) {
+        dateDOM.innerText = now.toLocaleDateString('id-ID', options);
     }
 }
 
-// HALAMAN TRACKING
-const btnCariDO = document.getElementById('btnCariDO');
 
+const btnCariDO = document.getElementById('btnCariDO');
 if (btnCariDO) {
     btnCariDO.addEventListener('click', function() {
         const noDO = document.getElementById('inputDO').value.trim();
         const resultDiv = document.getElementById('trackingResult');
         
-        if (noDO !== "" && dataTracking[noDO]) {
+        if (noDO !== "" && typeof dataTracking !== 'undefined' && dataTracking[noDO]) {
             const data = dataTracking[noDO];
+            
             document.getElementById("resNama").innerText = data.nama;
             document.getElementById("resDO").innerText = data.nomorDO;
             document.getElementById("resEkspedisi").innerText = data.ekspedisi;
@@ -88,10 +101,41 @@ if (btnCariDO) {
                 statusHtml = `<i class="fa-solid fa-box"></i> ${data.status}`;
             }
             statusBadge.innerHTML = `<span class="status-badge ${statusClass}">${statusHtml}</span>`;
+
+            const progressBarFill = document.getElementById('progressBarFill');
+            ['step1', 'step2', 'step3', 'step4'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.className = 'step-node';
+            });
+
+            if (progressBarFill) {
+                if (statusText.includes('selesai') || statusText.includes('diterima') || statusText.includes('sampai')) {
+                    ['step1', 'step2', 'step3', 'step4'].forEach(id => {
+                        const el = document.getElementById(id);
+                        if (el) el.classList.add('completed');
+                    });
+                    progressBarFill.style.width = 'calc(100% - 80px)';
+                    progressBarFill.style.background = '#10b981';
+                } else if (statusText.includes('perjalanan')) {
+                    document.getElementById('step1')?.classList.add('completed');
+                    document.getElementById('step2')?.classList.add('completed');
+                    document.getElementById('step3')?.classList.add('active');
+                    progressBarFill.style.width = 'calc(66% - 50px)';
+                    progressBarFill.style.background = '#0284c7';
+                } else if (statusText.includes('dikirim')) {
+                    document.getElementById('step1')?.classList.add('completed');
+                    document.getElementById('step2')?.classList.add('active');
+                    progressBarFill.style.width = 'calc(33% - 25px)';
+                    progressBarFill.style.background = '#0284c7';
+                } else {
+                    document.getElementById('step1')?.classList.add('active');
+                    progressBarFill.style.width = '0%';
+                    progressBarFill.style.background = '#0284c7';
+                }
+            }
             
             const ul = document.getElementById('timelineList');
             ul.innerHTML = "";
-            
             data.perjalanan.forEach(item => {
                 const li = document.createElement('li');
                 li.innerHTML = `<strong>${item.keterangan}</strong><br><span style="color:#64748b; font-size:0.9em;">${item.waktu}</span>`;
@@ -99,7 +143,6 @@ if (btnCariDO) {
             });
             
             resultDiv.classList.remove('hidden');
-            
         } else {
             resultDiv.classList.add('hidden');
             Swal.fire({ 
@@ -110,14 +153,14 @@ if (btnCariDO) {
         }
     });
 }
-// HALAMAN STOK
-const tableBodyStok = document.getElementById('tableBodyStok');
 
-if (tableBodyStok) {
+
+const tableBodyStok = document.getElementById('tableBodyStok');
+if (tableBodyStok && typeof dataBahanAjar !== 'undefined') {
     let dtInstance = null;
 
     function renderTabel() {
-        if ($.fn.DataTable.isDataTable('#tabelStok')) {
+        if (window.jQuery && $.fn.DataTable && $.fn.DataTable.isDataTable('#tabelStok')) {
             $('#tabelStok').DataTable().destroy();
         }
 
@@ -141,32 +184,33 @@ if (tableBodyStok) {
             tableBodyStok.appendChild(tr);
         });
 
-        dtInstance = $('#tabelStok').DataTable({
-            pageLength: 5,
-            responsive: true,
-            language: {
-                search: "Cari Bahan Ajar:",
-                lengthMenu: "Tampilkan _MENU_ data",
-                zeroRecords: "Data bahan ajar tidak ditemukan",
-                info: "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
-                infoEmpty: "Menampilkan 0 sampai 0 dari 0 data",
-                infoFiltered: "(disaring dari _MAX_ total data)",
-                paginate: {
-                    first: "Awal",
-                    last: "Akhir",
-                    next: "Lanjut",
-                    previous: "Kembali"
-                }
-            },
-            columnDefs: [
-                { orderable: false, targets: [0, 6] }
-            ]
-        });
+        if (window.jQuery && $.fn.DataTable) {
+            dtInstance = $('#tabelStok').DataTable({
+                pageLength: 5,
+                responsive: true,
+                language: {
+                    search: "Cari Bahan Ajar:",
+                    lengthMenu: "Tampilkan _MENU_ data",
+                    zeroRecords: "Data bahan ajar tidak ditemukan",
+                    info: "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
+                    infoEmpty: "Menampilkan 0 sampai 0 dari 0 data",
+                    infoFiltered: "(disaring dari _MAX_ total data)",
+                    paginate: {
+                        first: "Awal",
+                        last: "Akhir",
+                        next: "Lanjut",
+                        previous: "Kembali"
+                    }
+                },
+                columnDefs: [
+                    { orderable: false, targets: [0, 6] }
+                ]
+            });
+        }
     }
 
     renderTabel();
 
-    // Buka Detail Modal
     window.bukaDetail = function(index) {
         const item = dataBahanAjar[index];
         document.getElementById('detailCover').src = item.cover || 'https://via.placeholder.com/400x300?text=No+Image';
@@ -179,59 +223,64 @@ if (tableBodyStok) {
         document.getElementById('modalDetail').style.display = 'block';
     };
 
-    document.getElementById('btnShowAdd').onclick = () => document.getElementById('modalAdd').style.display = 'block';
+    const btnShowAdd = document.getElementById('btnShowAdd');
+    if (btnShowAdd) {
+        btnShowAdd.onclick = () => document.getElementById('modalAdd').style.display = 'block';
+    }
     
-    // Tambah Stok Baru
-    document.getElementById('btnTambahStok').addEventListener('click', function() {
-        const lokasi = document.getElementById('inputKodeLokasi').value.trim();
-        const kode = document.getElementById('inputKode').value.trim();
-        const judul = document.getElementById('inputJudul').value.trim();
-        const stok = document.getElementById('inputStok').value.trim();
-        const fileInput = document.getElementById('inputCover');
+    const btnTambahStok = document.getElementById('btnTambahStok');
+    if (btnTambahStok) {
+        btnTambahStok.addEventListener('click', function() {
+            const lokasi = document.getElementById('inputKodeLokasi').value.trim();
+            const kode = document.getElementById('inputKode').value.trim();
+            const judul = document.getElementById('inputJudul').value.trim();
+            const stok = document.getElementById('inputStok').value.trim();
+            const fileInput = document.getElementById('inputCover');
 
-        if(lokasi && kode && judul && stok) {
-            const simpanKeArray = (imageSource) => {
-                dataBahanAjar.push({ 
-                    kodeLokasi: lokasi, 
-                    kodeBarang: kode, 
-                    namaBarang: judul, 
-                    jenisBarang: "BMP", 
-                    edisi: "1", 
-                    stok: parseInt(stok), 
-                    cover: imageSource 
-                });
-                
-                renderTabel();
-                
-                document.getElementById('modalAdd').style.display = 'none';
-                document.getElementById('inputKodeLokasi').value = "";
-                document.getElementById('inputKode').value = "";
-                document.getElementById('inputJudul').value = "";
-                document.getElementById('inputStok').value = "";
-                fileInput.value = ""; 
+            if (lokasi && kode && judul && stok) {
+                const simpanKeArray = (imageSource) => {
+                    dataBahanAjar.push({ 
+                        kodeLokasi: lokasi, 
+                        kodeBarang: kode, 
+                        namaBarang: judul, 
+                        jenisBarang: "BMP", 
+                        edisi: "1", 
+                        stok: parseInt(stok), 
+                        cover: imageSource 
+                    });
+                    
+                    renderTabel();
+                    
+                    document.getElementById('modalAdd').style.display = 'none';
+                    document.getElementById('inputKodeLokasi').value = "";
+                    document.getElementById('inputKode').value = "";
+                    document.getElementById('inputJudul').value = "";
+                    document.getElementById('inputStok').value = "";
+                    fileInput.value = ""; 
 
-                Swal.fire({ icon: 'success', title: 'Tersimpan', text: 'Data stok dan cover berhasil ditambahkan!' });
-            };
-
-            if (fileInput.files && fileInput.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    simpanKeArray(e.target.result); 
+                    Swal.fire({ icon: 'success', title: 'Tersimpan', text: 'Data stok dan cover berhasil ditambahkan!' });
                 };
-                reader.readAsDataURL(fileInput.files[0]);
-            } else {
-                simpanKeArray('https://via.placeholder.com/400x300?text=No+Image');
-            }
 
-        } else {
-            Swal.fire({ 
-                icon: 'error', 
-                title: 'Data Tidak Lengkap', 
-                text: 'Isi semua data teks sebelum menyimpan!' 
-            });
-        }
-    });
+                if (fileInput.files && fileInput.files[0]) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        simpanKeArray(e.target.result); 
+                    };
+                    reader.readAsDataURL(fileInput.files[0]);
+                } else {
+                    simpanKeArray('https://via.placeholder.com/400x300?text=No+Image');
+                }
+            } else {
+                Swal.fire({ 
+                    icon: 'error', 
+                    title: 'Data Tidak Lengkap', 
+                    text: 'Isi semua data teks sebelum menyimpan!' 
+                });
+            }
+        });
+    }
 }
+
 
 const devFeatures = document.querySelectorAll('.dev-feature');
 devFeatures.forEach(menu => {
@@ -249,7 +298,6 @@ const btnLogout = document.getElementById('btnLogout');
 if (btnLogout) {
     btnLogout.addEventListener('click', function(e) {
         e.preventDefault();
-        
         Swal.fire({
             title: 'Konfirmasi Logout',
             text: "Apakah Anda yakin ingin keluar dari sistem?",
@@ -274,22 +322,3 @@ if (btnLogout) {
         });
     });
 }
-
-const modalLupa = document.getElementById('modalLupa');
-const modalDaftar = document.getElementById('modalDaftar');
-    
-document.getElementById('btnLupaPassword')
-    .onclick = (e) => { e.preventDefault(); 
-        modalLupa.style.display = "block"; 
-    };
-document.getElementById('btnDaftar')
-    .onclick = (e) => { e.preventDefault(); 
-        modalDaftar.style.display = "block"; 
-    };
-    
-document.getElementById('closeLupa')
-    .onclick = () => modalLupa.style.display = "none";
-document.getElementById('closeDaftar')
-    .onclick = () => modalDaftar.style.display = "none";
-
-
