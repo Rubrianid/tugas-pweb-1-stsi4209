@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - SITTA UT</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body class="login-bg">
+    <main class="login-container">
+        <div class="login-card">
+            <div class="login-logo">SITTA UT</div>
+            <p style="color: #64748b; margin-bottom: 25px;">Sistem Informasi Tiras & Transaksi Bahan Ajar</p>
+            
+            <form id="loginForm">
+                <div class="form-group">
+                    <input type="email" id="email" placeholder="Email (contoh: rina@ut.ac.id)" required>
+                </div>
+                <div class="form-group" style="margin-bottom: 10px;">
+                    <input type="password" id="password" placeholder="Password (contoh: rina123)" required>
+                </div>
+                
+                <!-- Tombol Lupa Password -->
+                <div style="text-align: right; margin-bottom: 20px;">
+                    <a href="#" id="btnLupaPassword" style="font-size: 0.85em; text-decoration: none; color: var(--primary-blue); font-weight: 600;">Lupa password?</a>
+                </div>
+                
+                <button type="submit" class="btn-primary">Masuk ke Dashboard</button>
+                
+                <!-- Tombol Daftar -->
+                <div style="text-align: center; margin-top: 20px;">
+                    <span style="font-size: 0.9em; color: #64748b;">Belum punya akun? <a href="#" id="btnDaftar" style="text-decoration: none; color: var(--primary-blue); font-weight: 600;">Daftar di sini</a></span>
+                </div>
+            </form>
+
+            <div class="dummy-hint">
+                <strong>Informasi Akun Demo (data.js):</strong><br>
+                Email: <b>rina@ut.ac.id</b><br>
+                Password: <b>rina123</b><br>
+                Role: UPBJJ-UT Jakarta
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal Box Lupa Password -->
+    <div id="modalLupa" class="modal">
+        <div class="modal-card" style="padding: 25px; max-width: 400px; margin-top: 15vh;">
+            <span class="close-modal" id="closeLupa" style="top: 15px; right: 15px;">&times;</span>
+            <h3 style="margin-bottom: 10px; color: var(--text-dark);">Reset Password</h3>
+            <p style="color: #64748b; font-size: 0.9em; margin-bottom: 15px;">Masukkan email terdaftar Anda untuk menerima tautan reset password.</p>
+            <input type="email" placeholder="Email Anda" style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; margin-bottom: 15px;">
+            <button class="btn-primary" style="background-color: var(--secondary-yellow);">Kirim Tautan</button>
+        </div>
+    </div>
+
+    <!-- Modal Box Daftar -->
+    <div id="modalDaftar" class="modal">
+        <div class="modal-card" style="padding: 25px; max-width: 400px; margin-top: 15vh;">
+            <span class="close-modal" id="closeDaftar" style="top: 15px; right: 15px;">&times;</span>
+            <h3 style="margin-bottom: 10px; color: var(--text-dark);">Daftar Akun Baru</h3>
+            <p style="color: #64748b; font-size: 0.9em; margin-bottom: 15px;">Silakan isi data diri Anda untuk pendaftaran UT-Daerah.</p>
+            <input type="text" placeholder="Nama Lengkap" style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; margin-bottom: 10px;">
+            <input type="email" placeholder="Email UT" style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; margin-bottom: 15px;">
+            <button class="btn-primary">Buat Akun</button>
+        </div>
+    </div>
+
+    <script src="js/data.js"></script>
+    <script src="js/script.js"></script>
+</body>
+</html>

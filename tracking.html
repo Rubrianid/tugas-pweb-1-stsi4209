@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Tracking - SITTA UT</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">
+            <img src="img/logo_ut.png" class="nav-logo" style="height: 45px; width: auto;">
+            SITTA UT
+        </div>
+        <ul class="nav-menu">
+            <li><a href="stok.html">Informasi Bahan Ajar</a></li>
+            <li><a href="tracking.html" class="active">Tracking Pengiriman</a></li>
+            <li class="dropdown">
+                <a href="#">Laporan ▾</a>
+                <div class="dropdown-content">
+                    <a href="#" class="dev-feature">Monitoring Progress DO</a>
+                    <a href="#" class="dev-feature">Rekap Bahan Ajar</a>
+                </div>
+            </li>
+            <li><a href="#" class="dev-feature">Histori Transaksi</a></li>
+            <li><a href="#" id="btnLogout" class="text-danger" style="margin-left: 20px; font-weight: bold;">Logout</a></li>
+        </ul>
+    </nav>
+
+    <main class="container">
+        <div class="card">
+            <h2 style="margin-bottom: 10px;">Tracking Pengiriman</h2>
+            <p style="color: #64748b; margin-bottom: 20px; font-size: 0.9em;">Masukkan Nomor Delivery Order untuk melihat nama mahasiswa, status, ekspedisi, riwayat perjalanan, dll.</p>
+            
+            <div class="search-wrapper">
+                <input type="text" id="inputDO" placeholder="Contoh: 2023001234">
+                <button id="btnCariDO" class="btn-search">Cari</button>
+            </div>
+        </div>
+
+        <div id="trackingResult" class="hidden card">
+            <div class="card-blue" style="padding: 20px; border-radius: 8px;">
+                <h3 id="resNama">NAMA MAHASISWA</h3>
+                <p id="resDO" style="font-weight: bold; margin-top: 5px; opacity: 0.9;"></p>
+                <div style="margin-top: 15px; display: flex; justify-content: space-between; font-size: 0.9em;">
+                    <div id="resEkspedisi"></div>
+                    <div id="resTanggal" style="text-align: right;"></div>
+                </div>
+            </div>
+            
+            <div class="tracking-timeline">
+                <h4 style="margin-top: 25px;">Perjalanan Paket</h4>
+                <ul id="timelineList"></ul>
+            </div>
+        </div>
+    </main>
+    <script src="js/data.js"></script>
+    <script src="js/script.js"></script>
+</body>
+</html>

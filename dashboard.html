@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard - SITTA UT</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">
+            <img src="img/logo_ut.png" class="nav-logo" style="height: 45px; width: auto;">
+            SITTA UT
+        </div>
+        <ul class="nav-menu">
+            <li><a href="stok.html">Informasi Bahan Ajar</a></li>
+            <li><a href="tracking.html">Tracking Pengiriman</a></li>
+            <li class="dropdown">
+                <a href="#" class="dropbtn">Laporan ▾</a>
+                <div class="dropdown-content">
+                    <a href="#" class="dev-feature">Monitoring Progress DO</a>
+                    <a href="#" class="dev-feature">Rekap Bahan Ajar</a>
+                </div>
+            </li>
+            <li><a href="#" class="dev-feature">Histori Transaksi</a></li>
+            <li><a href="#" id="btnLogout" class="text-danger" style="margin-left: 20px; font-weight: bold;">Logout</a></li>
+        </ul>
+    </nav>
+    <main class="container">
+        <div class="dash-header">
+            <div>
+                <h1 id="greetingText" style="color: var(--primary-dark);">Selamat ..., Admin</h1>
+                <p id="roleText" style="color: #64748b; margin-top: 5px;">Sistem Informasi Tiras & Transaksi Bahan Ajar</p>
+            </div>
+            <div class="dash-date">
+                <i class="fas fa-calendar-alt" style="margin-right: 8px;"></i>
+                <span id="currentDate">Sabtu, 10 Oktober 2026</span>
+            </div>
+        </div>
+        <div class="dash-stats">
+            <div class="stat-card border-blue">
+                <i class="fas fa-book stat-icon" style="color: var(--primary-blue);"></i>
+                <div class="stat-info">
+                    <h3>Total Stok Buku</h3>
+                    <h2 id="totalStokDashboard">0</h2>
+                </div>
+            </div>
+            <div class="stat-card border-yellow">
+                <i class="fas fa-truck stat-icon" style="color: var(--secondary-yellow);"></i>
+                <div class="stat-info">
+                    <h3>DO Aktif (Dummy)</h3>
+                    <h2>2</h2>
+                </div>
+            </div>
+            <div class="stat-card border-red">
+                <i class="fas fa-exclamation-triangle stat-icon" style="color: #ef4444;"></i>
+                <div class="stat-info">
+                    <h3>Stok Menipis</h3>
+                    <h2>0</h2>
+                </div>
+            </div>
+        </div>
+        <div class="dash-grid-2">
+            <div class="card">
+                <h3 style="margin-bottom: 5px;">Navigasi Cepat</h3>
+                <p style="color: #64748b; font-size: 0.9em;">Akses menu utama aplikasi SITTA.</p>
+                <div class="quick-nav-list">
+                    <a href="stok.html" class="q-nav-item">
+                        <span>Kelola Data Bahan Ajar</span>
+                        <span class="arrow">→</span>
+                    </a>
+                    <a href="tracking.html" class="q-nav-item">
+                        <span>Lacak Nomor Resi / DO</span>
+                        <span class="arrow">→</span>
+                    </a>
+                </div>
+            </div>
+            <div class="card dash-report-bg">
+                <h3 style="margin-bottom: 10px;">Area Laporan</h3>
+                <p style="color: #64748b; font-size: 0.9em; margin-bottom: 20px; line-height: 1.5;">
+                    Fitur pelaporan saat ini sedang dalam tahap pengembangan UI/UX. Nantinya Anda dapat mencetak rekapitulasi transaksi dalam format PDF atau Excel di sini.
+                </p>
+                <button class="btn-primary dev-feature" style="width: max-content; padding: 10px 25px; background-color: var(--primary-dark);">Buka Panel Laporan</button>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/data.js"></script>
+    <script src="js/script.js"></script>
+</body>
+</html>

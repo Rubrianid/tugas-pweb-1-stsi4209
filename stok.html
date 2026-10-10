@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Stok - SITTA UT</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">
+            <img src="img/logo_ut.png" class="nav-logo" style="height: 45px; width: auto;">
+            SITTA UT
+        </div>
+        <ul class="nav-menu">
+            <li><a href="stok.html" class="active">Informasi Bahan Ajar</a></li>
+            <li><a href="tracking.html">Tracking Pengiriman</a></li>
+            <li class="dropdown">
+                <a href="#">Laporan ▾</a>
+                <div class="dropdown-content">
+                    <a href="#" class="dev-feature">Monitoring Progress DO</a>
+                    <a href="#" class="dev-feature">Rekap Bahan Ajar</a>
+                </div>
+            </li>
+            <li><a href="#" class="dev-feature">Histori Transaksi</a></li>
+            <li><a href="#" id="btnLogout" class="text-danger" style="margin-left: 20px; font-weight: bold;">Logout</a></li>
+        </ul>
+    </nav>
+
+    <main class="container">
+        <div class="card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h2>Informasi Bahan Ajar</h2>
+                <button class="btn-primary" style="width: auto;" id="btnShowAdd"> + Tambah Stok</button>
+            </div>
+            
+            <table class="styled-table">
+                <thead>
+                    <tr>
+                        <th>Cover</th>
+                        <th>Kode Lokasi</th>
+                        <th>Kode Barang</th>
+                        <th>Nama Barang</th>
+                        <th>Edisi</th>
+                        <th>Stok</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBodyStok">
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <div id="modalAdd" class="modal">
+        <div class="card" style="margin: 10vh auto; width: 90%; max-width: 500px; position: relative;">
+            <span class="close-modal" onclick="document.getElementById('modalAdd').style.display='none'">&times;</span>
+            <h3 style="margin-bottom: 20px;">Tambah Data Baru</h3>
+            <div class="form-group"><input type="text" id="inputKodeLokasi" placeholder="Kode Lokasi"></div>
+            <div class="form-group"><input type="text" id="inputKode" placeholder="Kode Barang"></div>
+            <div class="form-group"><input type="text" id="inputJudul" placeholder="Nama Barang"></div>
+            <div class="form-group"><input type="number" id="inputStok" placeholder="Jumlah Stok"></div>
+            <div class="form-group" style="flex-direction: column; align-items: flex-start; border: none;">
+                <label for="inputCover" style="font-size: 0.85em; color: #64748b; margin-bottom: 8px;">Upload Cover (Opsional)</label>
+                <input type="file" id="inputCover" accept="image/*" style="width: 100%; border: 1px dashed #cbd5e1; padding: 10px; border-radius: 4px;">
+            </div>
+
+            <button id="btnTambahStok" class="btn-primary" style="margin-top: 10px;">Simpan Data</button>
+        </div>
+    </div>
+
+    <div id="modalDetail" class="modal">
+        <div class="modal-card">
+            <span class="close-modal" onclick="document.getElementById('modalDetail').style.display='none'">&times;</span>
+            <img id="detailCover" class="modal-cover" src="" alt="Cover" onerror="this.src='https://via.placeholder.com/400x300?text=No+Image'">
+            <div class="modal-body">
+                <div class="modal-row"><small>Kode Lokasi</small><strong id="detailLokasi"></strong></div>
+                <div class="modal-row"><small>Kode Barang</small><strong id="detailKode"></strong></div>
+                <div class="modal-row"><small>Nama Barang</small><strong id="detailNama"></strong></div>
+                <div class="modal-row"><small>Jenis Barang</small><strong id="detailJenis"></strong></div>
+                <div class="modal-row"><small>Edisi</small><strong id="detailEdisi"></strong></div>
+                <div class="modal-row" style="border: none;"><small>Stok</small><strong id="detailStok" style="font-size: 1.2em;"></strong></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/data.js"></script>
+    <script src="js/script.js"></script>
+</body>
+</html>
