@@ -85,23 +85,33 @@ if (btnCariDO) {
             const opsiFormat = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
             document.getElementById("resTanggal").innerText = tanggalObj.toLocaleDateString('id-ID', opsiFormat);
 
-            const statusBadge = document.getElementById("resStatusBadge");
+            // Cek keterangan riwayat terakhir untuk menentukan status
+            const riwayatTerakhir = (data.perjalanan && data.perjalanan.length > 0)
+                ? data.perjalanan[data.perjalanan.length - 1].keterangan.toLowerCase()
+                : "";
+
             const statusText = data.status.toLowerCase();
+            const statusBadge = document.getElementById("resStatusBadge");
             let statusHtml = '';
             let statusClass = '';
 
-            if (statusText.includes('selesai') || statusText.includes('diterima') || statusText.includes('sampai')) {
+            // 1. Menentukan Status Badge (cek jika riwayat terakhir sudah selesai antar)
+            if (statusText.includes('selesai') || statusText.includes('diterima') || riwayatTerakhir.includes('selesai')) {
                 statusClass = 'badge-success';
-                statusHtml = `<i class="fa-solid fa-circle-check"></i> ${data.status}`;
-            } else if (statusText.includes('perjalanan') || statusText.includes('dikirim') || statusText.includes('proses')) {
+                statusHtml = `<i class="fa-solid fa-circle-check"></i> Selesai Antar`;
+            } else if (statusText.includes('perjalanan') || riwayatTerakhir.includes('antar') || riwayatTerakhir.includes('diteruskan')) {
                 statusClass = 'badge-warning';
-                statusHtml = `<i class="fa-solid fa-truck-fast"></i> ${data.status}`;
+                statusHtml = `<i class="fa-solid fa-truck-fast"></i> Dalam Perjalanan`;
+            } else if (statusText.includes('dikirim')) {
+                statusClass = 'badge-info';
+                statusHtml = `<i class="fa-solid fa-dolly"></i> Dikirim`;
             } else {
                 statusClass = 'badge-info';
-                statusHtml = `<i class="fa-solid fa-box"></i> ${data.status}`;
+                statusHtml = `<i class="fa-solid fa-box"></i> Diproses`;
             }
             statusBadge.innerHTML = `<span class="status-badge ${statusClass}">${statusHtml}</span>`;
 
+            // 2. Menentukan Progress Bar
             const progressBarFill = document.getElementById('progressBarFill');
             ['step1', 'step2', 'step3', 'step4'].forEach(id => {
                 const el = document.getElementById(id);
@@ -109,24 +119,28 @@ if (btnCariDO) {
             });
 
             if (progressBarFill) {
-                if (statusText.includes('selesai') || statusText.includes('diterima') || statusText.includes('sampai')) {
+                // Tahap 4: Selesai Antar (Hijau Penuh)
+                if (statusText.includes('selesai') || statusText.includes('diterima') || riwayatTerakhir.includes('selesai')) {
                     ['step1', 'step2', 'step3', 'step4'].forEach(id => {
                         const el = document.getElementById(id);
                         if (el) el.classList.add('completed');
                     });
                     progressBarFill.style.width = 'calc(100% - 80px)';
                     progressBarFill.style.background = '#10b981';
-                } else if (statusText.includes('perjalanan')) {
+                // Tahap 3: Dalam Perjalanan
+                } else if (statusText.includes('perjalanan') || riwayatTerakhir.includes('antar') || riwayatTerakhir.includes('diteruskan')) {
                     document.getElementById('step1')?.classList.add('completed');
                     document.getElementById('step2')?.classList.add('completed');
                     document.getElementById('step3')?.classList.add('active');
                     progressBarFill.style.width = 'calc(66% - 50px)';
                     progressBarFill.style.background = '#0284c7';
+                // Tahap 2: Baru Dikirim
                 } else if (statusText.includes('dikirim')) {
                     document.getElementById('step1')?.classList.add('completed');
                     document.getElementById('step2')?.classList.add('active');
                     progressBarFill.style.width = 'calc(33% - 25px)';
                     progressBarFill.style.background = '#0284c7';
+                // Tahap 1: Diproses
                 } else {
                     document.getElementById('step1')?.classList.add('active');
                     progressBarFill.style.width = '0%';
@@ -134,6 +148,7 @@ if (btnCariDO) {
                 }
             }
             
+            // 3. Render Riwayat Timeline
             const ul = document.getElementById('timelineList');
             ul.innerHTML = "";
             data.perjalanan.forEach(item => {
@@ -153,7 +168,6 @@ if (btnCariDO) {
         }
     });
 }
-
 
 const tableBodyStok = document.getElementById('tableBodyStok');
 if (tableBodyStok && typeof dataBahanAjar !== 'undefined') {
