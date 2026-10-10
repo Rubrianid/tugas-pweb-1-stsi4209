@@ -1,5 +1,6 @@
 :root {
     --primary-dark: #1e293b;
+    --primary-medium: #0d3d8b;
     --primary-blue: #0284c7;
     --secondary-yellow: #f59e0b;
     --bg-color: #f1f5f9;
@@ -11,7 +12,7 @@ body { background-color: var(--bg-color); color: var(--text-dark); }
 
 
 .navbar {
-    background-color: var(--primary-dark);
+    background-color: var(--primary-medium);
     padding: 0 40px;
     display: flex;
     justify-content: space-between;
@@ -59,12 +60,12 @@ body { background-color: var(--bg-color); color: var(--text-dark); }
 .nav-menu > li > a.active { 
     color: white; 
     background-color: transparent;
-    border-bottom: 3px solid var(--secondary-yellow); 
+    border-bottom: 4px solid var(--secondary-yellow); 
 }
 
 .nav-menu > li.dropdown:hover > a.dropbtn {
     color: white;
-    border-bottom: 3px solid var(--secondary-yellow);
+    border-bottom: 4px solid var(--secondary-yellow);
 }
 
 .dropdown { position: relative; height: 100%; }
@@ -76,12 +77,12 @@ body { background-color: var(--bg-color); color: var(--text-dark); }
 
 .container { padding: 40px; max-width: 1100px; margin: auto; }
 .card { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); margin-bottom: 20px; }
-.card-blue { background: linear-gradient(135deg, #c78902, #e9da0e); color: white; }
+.card-blue { background: linear-gradient(135deg, #025ec7, #0e91e9); color: white; }
 .hidden { display: none; }
 
 .login-bg { display: flex; justify-content: center; align-items: center; height: 100vh; background: #e2e8f0; }
 .login-card { background: white; padding: 40px; border-radius: 12px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); width: 100%; max-width: 400px; text-align: center; }
-.login-logo { font-size: 2em; font-weight: bold; color: var(--primary-dark); margin-bottom: 5px; }
+.login-logo { text-align: center; font-size: 2em; font-weight: bold; color: var(--primary-dark); margin-bottom: 5px; }
 .form-group { margin-bottom: 20px; text-align: left; }
 .form-group input { width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; margin-top: 5px; outline: none; }
 .form-group input:focus { border-color: var(--primary-blue); }
@@ -97,6 +98,17 @@ body { background-color: var(--bg-color); color: var(--text-dark); }
 .tracking-timeline ul { list-style: none; border-left: 2px solid var(--secondary-yellow); padding-left: 20px; margin-top: 20px; margin-left: 10px; }
 .tracking-timeline li { margin-bottom: 20px; position: relative; font-size: 0.9em; }
 .tracking-timeline li::before { content: ''; position: absolute; left: -26px; top: 4px; width: 10px; height: 10px; background: var(--secondary-yellow); border-radius: 50%; box-shadow: 0 0 0 3px white; }
+.timeline-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+    margin-bottom: 30px;
+}
+.tracking-timeline {
+    margin-top: 5px;
+}
 
 .styled-table { width: 100%; border-collapse: collapse; margin-top: 15px; }
 .styled-table th, .styled-table td { padding: 15px; text-align: left; border-bottom: 1px solid #e2e8f0; }
@@ -204,4 +216,153 @@ body { background-color: var(--bg-color); color: var(--text-dark); }
     box-shadow: 2px 2px 5px rgba(0,0,0,0.15);
     border: 1px solid #cbd5e1;
     display: block;
+}
+
+.section-heading {
+    font-size: 1.1em;
+    color: #334155;
+    margin: 25px 0 15px 0;
+    font-weight: 600;
+}
+.label-text {
+    font-size: 0.85em;
+    color: #18345c;
+    display: block;
+    margin-bottom: 4px;
+}
+
+.main-header-card {
+    background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+    color: white;
+    border-radius: 12px;
+    padding: 25px;
+    display: flex;
+    justify-content: space-between;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.main-header-card .label-text {
+    color: #bae6fd; 
+}
+.student-name {
+    font-size: 1.6em;
+    margin: 0 0 15px 0;
+    color: #f8fafc;
+}
+.do-number {
+    font-size: 1.4em;
+    margin: 0 0 15px 0;
+    color: #f8fafc;
+    text-align: right;
+}
+.ekspedisi-info {
+    text-align: right;
+}
+.ekspedisi-info .label-text {
+    display: inline;
+    margin-right: 5px;
+}
+.ekspedisi-name {
+    font-weight: 600;
+    color: #38bdf8;
+}
+
+@media (max-width: 600px) {
+    .main-header-card {
+        flex-direction: column;
+        gap: 20px;
+    }
+    .do-number, .ekspedisi-info {
+        text-align: left;
+    }
+}
+
+/* Grid Detail Pengiriman */
+.details-grid-3 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+}
+.detail-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+}
+.card-highlight {
+    background: #b9dde7;
+    /* #fefce8; */
+    border-color: #048ddd; 
+     /* #fef08a */
+}
+.dc-icon {
+    width: 45px;
+    height: 45px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2em;
+}
+.bg-blue { background: #e0f2fe; color: #0284c7; }
+.bg-purple { background: #f3e8ff; color: #9333ea; }
+.bg-yellow { background: #fef08a; color: #ca8a04; }
+
+.dc-content {
+    display: flex;
+    flex-direction: column;
+}
+.dc-value {
+    font-size: 1.1em;
+    font-weight: 600;
+    color: #1e293b;
+}
+.price-text {
+    color: #6400bf;
+    font-size: 1.2em;
+}
+
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 0.85em;
+    font-weight: 600;
+}
+.badge-warning { background: #f59e0b; color: #fff; }
+.badge-success { background: #10b981; color: #fff; }
+.badge-info { background: #3b82f6; color: #fff; }
+
+.input-icon-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.input-icon-wrapper .input-icon {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #94a3b8;
+}
+
+.input-icon-wrapper input {
+    width: 100%;
+    padding-left: 45px !important;
+    box-sizing: border-box;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 0.85em;
+    font-weight: 600;
+    color: #334155; /* Warna teks abu-abu gelap kebiruan */
+    letter-spacing: 0.3px;
 }

@@ -52,40 +52,75 @@ if (greetingText) {
     }
 }
 
-//HALAMAN TRACKING
+// HALAMAN TRACKING
 const btnCariDO = document.getElementById('btnCariDO');
+
 if (btnCariDO) {
     btnCariDO.addEventListener('click', function() {
-        const noDO = document.getElementById('inputDO').value;
+        const noDO = document.getElementById('inputDO').value.trim();
         const resultDiv = document.getElementById('trackingResult');
         
-        if (dataTracking[noDO]) {
+        if (noDO !== "" && dataTracking[noDO]) {
             const data = dataTracking[noDO];
-            document.getElementById('resNama').innerText = data.nama;
-            document.getElementById('resDO').innerText = data.nomorDO;
-            document.getElementById('resEkspedisi').innerText = `Ekspedisi: ${data.ekspedisi} | Resi: ${data.paket}`;
-            document.getElementById('resTanggal').innerText = data.tanggalKirim;
+            document.getElementById("resNama").innerText = data.nama;
+            document.getElementById("resDO").innerText = data.nomorDO;
+            document.getElementById("resEkspedisi").innerText = data.ekspedisi;
+            document.getElementById("resPaket").innerText = data.paket;
+            document.getElementById("resTotal").innerText = data.total;
+            
+            const tanggalObj = new Date(data.tanggalKirim);
+            const opsiFormat = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
+            document.getElementById("resTanggal").innerText = tanggalObj.toLocaleDateString('id-ID', opsiFormat);
+
+            const statusBadge = document.getElementById("resStatusBadge");
+            const statusText = data.status.toLowerCase();
+            let statusHtml = '';
+            let statusClass = '';
+
+            if (statusText.includes('selesai') || statusText.includes('diterima') || statusText.includes('sampai')) {
+                statusClass = 'badge-success';
+                statusHtml = `<i class="fa-solid fa-circle-check"></i> ${data.status}`;
+            } else if (statusText.includes('perjalanan') || statusText.includes('dikirim') || statusText.includes('proses')) {
+                statusClass = 'badge-warning';
+                statusHtml = `<i class="fa-solid fa-truck-fast"></i> ${data.status}`;
+            } else {
+                statusClass = 'badge-info';
+                statusHtml = `<i class="fa-solid fa-box"></i> ${data.status}`;
+            }
+            statusBadge.innerHTML = `<span class="status-badge ${statusClass}">${statusHtml}</span>`;
             
             const ul = document.getElementById('timelineList');
-            ul.innerHTML = ""; 
+            ul.innerHTML = "";
+            
             data.perjalanan.forEach(item => {
                 const li = document.createElement('li');
-                li.innerHTML = `<strong>${item.keterangan}</strong><br><span style="color:#64748b;">${item.waktu}</span>`;
+                li.innerHTML = `<strong>${item.keterangan}</strong><br><span style="color:#64748b; font-size:0.9em;">${item.waktu}</span>`;
                 ul.appendChild(li);
             });
             
             resultDiv.classList.remove('hidden');
+            
         } else {
             resultDiv.classList.add('hidden');
-            Swal.fire({ icon: 'warning', title: 'Oops!', text: 'Nomor DO tidak ditemukan.' });
+            Swal.fire({ 
+                icon: 'warning', 
+                title: 'Oops!', 
+                text: 'Nomor DO tidak ditemukan atau kosong.' 
+            });
         }
     });
 }
-
-//HALAMAN STOK
+// HALAMAN STOK
 const tableBodyStok = document.getElementById('tableBodyStok');
+
 if (tableBodyStok) {
+    let dtInstance = null;
+
     function renderTabel() {
+        if ($.fn.DataTable.isDataTable('#tabelStok')) {
+            $('#tabelStok').DataTable().destroy();
+        }
+
         tableBodyStok.innerHTML = "";
         dataBahanAjar.forEach((item, index) => {
             const tr = document.createElement('tr');
@@ -105,10 +140,33 @@ if (tableBodyStok) {
             `;
             tableBodyStok.appendChild(tr);
         });
+
+        dtInstance = $('#tabelStok').DataTable({
+            pageLength: 5,
+            responsive: true,
+            language: {
+                search: "Cari Bahan Ajar:",
+                lengthMenu: "Tampilkan _MENU_ data",
+                zeroRecords: "Data bahan ajar tidak ditemukan",
+                info: "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
+                infoEmpty: "Menampilkan 0 sampai 0 dari 0 data",
+                infoFiltered: "(disaring dari _MAX_ total data)",
+                paginate: {
+                    first: "Awal",
+                    last: "Akhir",
+                    next: "Lanjut",
+                    previous: "Kembali"
+                }
+            },
+            columnDefs: [
+                { orderable: false, targets: [0, 6] }
+            ]
+        });
     }
+
     renderTabel();
 
-    //Buka Detail Modal
+    // Buka Detail Modal
     window.bukaDetail = function(index) {
         const item = dataBahanAjar[index];
         document.getElementById('detailCover').src = item.cover || 'https://via.placeholder.com/400x300?text=No+Image';
@@ -123,11 +181,12 @@ if (tableBodyStok) {
 
     document.getElementById('btnShowAdd').onclick = () => document.getElementById('modalAdd').style.display = 'block';
     
+    // Tambah Stok Baru
     document.getElementById('btnTambahStok').addEventListener('click', function() {
-        const lokasi = document.getElementById('inputKodeLokasi').value;
-        const kode = document.getElementById('inputKode').value;
-        const judul = document.getElementById('inputJudul').value;
-        const stok = document.getElementById('inputStok').value;
+        const lokasi = document.getElementById('inputKodeLokasi').value.trim();
+        const kode = document.getElementById('inputKode').value.trim();
+        const judul = document.getElementById('inputJudul').value.trim();
+        const stok = document.getElementById('inputStok').value.trim();
         const fileInput = document.getElementById('inputCover');
 
         if(lokasi && kode && judul && stok) {
@@ -143,6 +202,7 @@ if (tableBodyStok) {
                 });
                 
                 renderTabel();
+                
                 document.getElementById('modalAdd').style.display = 'none';
                 document.getElementById('inputKodeLokasi').value = "";
                 document.getElementById('inputKode').value = "";
@@ -231,3 +291,5 @@ document.getElementById('closeLupa')
     .onclick = () => modalLupa.style.display = "none";
 document.getElementById('closeDaftar')
     .onclick = () => modalDaftar.style.display = "none";
+
+

@@ -5,6 +5,7 @@
     <title>Tracking - SITTA UT</title>
     <link rel="stylesheet" href="css/style.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
     <nav class="navbar">
@@ -38,19 +39,54 @@
             </div>
         </div>
 
-        <div id="trackingResult" class="hidden card">
-            <div class="card-blue" style="padding: 20px; border-radius: 8px;">
-                <h3 id="resNama">NAMA MAHASISWA</h3>
-                <p id="resDO" style="font-weight: bold; margin-top: 5px; opacity: 0.9;"></p>
-                <div style="margin-top: 15px; display: flex; justify-content: space-between; font-size: 0.9em;">
-                    <div id="resEkspedisi"></div>
-                    <div id="resTanggal" style="text-align: right;"></div>
+        <div id="trackingResult" class="hidden">
+            <h3 class="section-heading">Informasi Pengiriman</h3>
+            <div class="main-header-card">
+                <div class="mhc-left">
+                    <span class="label-text">Nama Mahasiswa</span>
+                    <h2 id="resNama" class="student-name"></h2>
+                    <div id="resStatusBadge" class="status-wrapper"></div>
+                </div>
+                <div class="mhc-right">
+                    <span class="label-text">Nomor Delivery Order</span>
+                    <h3 id="resDO" class="do-number"></h3>
+                    <div class="ekspedisi-info">
+                        <span class="label-text">Ekspedisi:</span>
+                        <span id="resEkspedisi" class="ekspedisi-name"></span>
+                    </div>
                 </div>
             </div>
-            
-            <div class="tracking-timeline">
-                <h4 style="margin-top: 25px;">Perjalanan Paket</h4>
-                <ul id="timelineList"></ul>
+
+            <h3 class="section-heading">Detail Pengiriman</h3>
+            <div class="details-grid-3">
+                <div class="detail-card">
+                    <div class="dc-icon bg-blue"><i class="fa-regular fa-calendar"></i></div>
+                    <div class="dc-content">
+                        <span class="label-text">Tanggal Kirim</span>
+                        <span id="resTanggal" class="dc-value"></span>
+                    </div>
+                </div>
+                <div class="detail-card">
+                    <div class="dc-icon bg-yellow"><i class="fa-solid fa-box"></i></div>
+                    <div class="dc-content">
+                        <span class="label-text">Paket</span>
+                        <span id="resPaket" class="dc-value"></span>
+                    </div>
+                </div>
+                <div class="detail-card card-highlight">
+                    <div class="dc-icon bg-purple"><i class="fa-solid fa-wallet"></i></div>
+                    <div class="dc-content">
+                        <span class="label-text">Total Pembayaran</span>
+                        <span id="resTotal" class="dc-value price-text"></span>
+                    </div>
+                </div>
+            </div>
+
+            <h3 class="section-heading">Riwayat Perjalanan</h3>
+            <div class="timeline-card">
+                <div class="tracking-timeline">
+                    <ul id="timelineList"></ul>
+                </div>
             </div>
         </div>
     </main>
