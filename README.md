@@ -35,7 +35,7 @@ Aplikasi web untuk pengelolaan informasi bahan ajar Universitas Terbuka.
 
 ## Struktur Folder
 ```
-SITTA-UT/
+sitta-praktik/
 ├── index.html        # Halaman login
 ├── dashboard.html    # Dashboard utama
 ├── stok.html         # Informasi bahan ajar
