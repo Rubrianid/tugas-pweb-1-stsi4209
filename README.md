@@ -1,4 +1,4 @@
-# SITTA UT — Sistem Informasi Tiras & Transaksi Bahan Ajar
+# SITTA UT
 
 Tugas 1 — Pemrograman Berbasis Web (STSI4209)
 
